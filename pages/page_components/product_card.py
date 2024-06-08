@@ -1,11 +1,17 @@
+"""The module contains PageComponent ProductCard"""
+
+from loguru import logger
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 from pages.page_elements.elements import BaseElement, Button, Link
+from pages.page_components.modal_cart import ModalCart
 
 
 class ProductCard:
-    """PageComponent ProductCard"""
+    """
+    PageComponent ProductCard
+    Product card on the CatalogPage
+    """
 
     def __init__(self, browser: webdriver, product_id: str):
         self.browser = browser
@@ -31,34 +37,50 @@ class ProductCard:
 
         self.__product_price = BaseElement(
             self.browser,
-            name="item-product-price__new-price",
+            name="item_product_price",
             locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] div.item-product-price__new-price > span"),
         )
-        self.__button_add_to_basket = Button(
+        self.__button_add_to_cart = Button(
             self.browser,
-            name="button_add_item_to_basket",
+            name="button_add_item_to_cart",
             locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] div.item-product-cart-action > button"),
         )
 
     @property
-    def product_name(self):
-        return self.__product_title.get_element().text
+    def product_name(self) -> str:
+        """Returns: product name in product card"""
+        product_name = self.__product_title.get_element().text
+        logger.info(f"Get product name - {product_name }")
+        return product_name
 
     @property
-    def product_link(self):
-        return self.__product_title.get_element().get_attribute("href")
+    def product_link(self) -> str:
+        """Returns: product link in product card"""
+        product_link = self.__product_title.get_element().get_attribute("href")
+        logger.info(f"Get product link - {product_link}")
+        return product_link
 
     @property
-    def product_price(self):
-        return self.__product_price.get_element().text
+    def product_price(self) -> str:
+        """Returns: product price in product card"""
+        product_price = self.__product_price.get_element().text
+        logger.info(f"Get product price - {product_price}")
+        return product_price
 
-    @property
-    def product_img_alt(self):
-        return self.__product_img.get_element().get_attribute("alt")
+    def is_there_product_card(self) -> bool:
+        """
+        Try to find product card
+        Returns:
+            True - if there is product card
+            False - if there is no product card
+        """
+        return self.__data_id.is_element_present()
 
-    def find_product_card(self):
-        try:
-            self.__data_id.get_element()
-        except NoSuchElementException:
-            return False
-        return True
+    def add_product_to_cart(self):
+        """
+        Click button add product to cart
+        Returns: ModalCart - modal window with information about the added product
+        """
+        logger.info(f"Add product with id {self.product_id} to cart")
+        self.__button_add_to_cart.click_to_button()
+        return ModalCart(self.browser)

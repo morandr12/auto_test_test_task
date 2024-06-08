@@ -1,3 +1,5 @@
+"""The module contains catalogs dataclasses"""
+
 from dataclasses import dataclass
 from data.products import Product, planshet_digma
 

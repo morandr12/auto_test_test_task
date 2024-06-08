@@ -1,15 +1,20 @@
+"""The module contains PageComponent SearchBar"""
+
+from loguru import logger
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from pages.page_elements.elements import Input, Button, Link
+from pages.page_elements.elements import InputField, Button
 
 
-class SearchBarComponent:
-    """PageComponent SearchBar"""
-
+class SearchBar:
+    """
+    PageComponent SearchBar
+    Search bar on Main, Catalog, Product pages
+    """
     def __init__(self, browser: webdriver):
         self.browser = browser
         self.name = "Dropdown catalog menu"
-        self.__input_form = Input(
+        self.__input_form = InputField(
             browser,
             name="search_bar",
             locator=(By.CSS_SELECTOR, "form.head-search > input"),
@@ -21,19 +26,20 @@ class SearchBarComponent:
         )
 
     def input_text(self, text: str):
+        """
+        Input text in search bar
+        Parameters: text
+        Returns: self
+        """
+        logger.info(f"Input text to search bar {text}")
         self.__input_form.input_text(text)
+        return self
 
-    def submit_button_click(self):
+    def click_submit_button(self):
+        """
+        Click on submit button in search bar
+        Returns: self
+        """
+        logger.info(f"Click on submit button in search bar")
         self.__submit_button.click_to_button()
-
-    def select_dropdown_item_by_index(self, list_index: str, item_index: str):
-        dropdown_item = Link(
-            self.browser,
-            name="dropdown_item",
-            locator=(
-                By.CSS_SELECTOR,
-                f".head-search__dropdown > #autoComplete_list_{list_index} > #autoComplete_result_{item_index} > a",
-            ),
-        )
-        dropdown_item.move_to_link()
-        dropdown_item.click_to_element()
+        return self

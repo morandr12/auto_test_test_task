@@ -1,3 +1,5 @@
-pytest==8.2.2
-selenium==4.21.0
 loguru==0.7.2
+pytest==8.2.2
+pytest-check==2.3.1
+selenium==4.21.0
+

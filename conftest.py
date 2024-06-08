@@ -1,10 +1,12 @@
 import pytest
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from pages.page_objects.main_page import MainPage
 from pages.page_objects.catalog_page import CatalogPage
-from data.pages_links import MAIN_PAGE_LINK
+from data.pages_links import MAIN_PAGE_LINK, RESULT_QUERY_LINK
+from utilits.logger import logger
 
 
 def pytest_addoption(parser):
@@ -18,13 +20,14 @@ def browser(request) -> webdriver:
     if request.config.getoption("headless"):
         options.add_argument("--headless")
 
-    print("\nstart browser for test..")
-    driver = webdriver.Chrome(options=options)
-    driver.set_window_size(1920, 1080)
-    yield driver
+    logger.info("Start browser for test..")
+    browser = webdriver.Chrome(options=options)
+    browser.set_window_size(1920, 1080)
 
-    print("\nquit browser..")
-    driver.quit()
+    yield browser
+
+    logger.info("Quit browser..")
+    browser.quit()
 
 
 @pytest.fixture()
@@ -34,7 +37,11 @@ def main_page(browser):
 
 @pytest.fixture()
 def catalog_page(browser, request):
-    marker = request.node.get_closest_marker('catalog')
-    page_link = None if marker is None else MAIN_PAGE_LINK + marker.args[0]
+    page_link = MAIN_PAGE_LINK + request.param.link
     return CatalogPage(browser, page_link)
+
+
+@pytest.fixture()
+def result_query_page(browser):
+    return CatalogPage(browser, url=RESULT_QUERY_LINK)
 
