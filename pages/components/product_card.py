@@ -3,8 +3,8 @@
 from loguru import logger
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from pages.page_elements.elements import BaseElement, Button, Link
-from pages.page_components.modal_cart import ModalCart
+from pages.elements.elements import BaseElement, Button, Link
+from pages.components.cart_modal import CartModal
 
 
 class ProductCard:
@@ -29,21 +29,22 @@ class ProductCard:
             name="item_card_title",
             locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] a.item-card__title"),
         )
-        self.__product_img = Link(
-            self.browser,
-            name="item_card_title",
-            locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] a.item-product-img > img"),
-        )
 
         self.__product_price = BaseElement(
             self.browser,
             name="item_product_price",
-            locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] div.item-product-price__new-price > span"),
+            locator=(
+                By.CSS_SELECTOR,
+                f"div[data-id='{self.product_id}'] div.item-product-price__new-price > span",
+            ),
         )
         self.__button_add_to_cart = Button(
             self.browser,
             name="button_add_item_to_cart",
-            locator=(By.CSS_SELECTOR, f"div[data-id='{self.product_id}'] div.item-product-cart-action > button"),
+            locator=(
+                By.CSS_SELECTOR,
+                f"div[data-id='{self.product_id}'] div.item-product-cart-action > button",
+            ),
         )
 
     @property
@@ -74,13 +75,15 @@ class ProductCard:
             True - if there is product card
             False - if there is no product card
         """
-        return self.__data_id.is_element_present()
+        is_there_product_card = self.__data_id.is_element_present()
+        logger.info(f"Check is product_card present. Result = {is_there_product_card}")
+        return is_there_product_card
 
-    def add_product_to_cart(self):
+    def add_product_to_cart(self) -> CartModal:
         """
         Click button add product to cart
         Returns: ModalCart - modal window with information about the added product
         """
         logger.info(f"Add product with id {self.product_id} to cart")
         self.__button_add_to_cart.click_to_button()
-        return ModalCart(self.browser)
+        return CartModal(self.browser)
