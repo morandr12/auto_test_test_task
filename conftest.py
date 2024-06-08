@@ -1,10 +1,11 @@
 import pytest
-import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from pages.page_objects.main_page import MainPage
 from pages.page_objects.catalog_page import CatalogPage
+from pages.page_objects.checkout_page import CheckoutPage
+from pages.page_objects.user_profile_page import UserProfilePage
 from data.pages_links import MAIN_PAGE_LINK, RESULT_QUERY_LINK
 from utilits.logger import logger
 
@@ -36,6 +37,16 @@ def main_page(browser):
 
 
 @pytest.fixture()
+def user_profile_page(browser):
+    return UserProfilePage(browser)
+
+
+@pytest.fixture()
+def checkout_page(browser):
+    return CheckoutPage(browser)
+
+
+@pytest.fixture()
 def catalog_page(browser, request):
     page_link = MAIN_PAGE_LINK + request.param.link
     return CatalogPage(browser, page_link)
@@ -44,4 +55,3 @@ def catalog_page(browser, request):
 @pytest.fixture()
 def result_query_page(browser):
     return CatalogPage(browser, url=RESULT_QUERY_LINK)
-

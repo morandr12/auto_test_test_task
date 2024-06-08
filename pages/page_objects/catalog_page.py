@@ -3,20 +3,23 @@
 from loguru import logger
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from pages.page_objects.main_page import MainPage
-from pages.page_elements.elements import BaseElement
-from pages.page_components.product_card import ProductCard
+from pages.page_objects.main_page import BasePage
+from pages.components.header import Header
+from pages.components.product_card import ProductCard
+from pages.elements.elements import BaseElement
 
 
-class CatalogPage(MainPage):
+class CatalogPage(BasePage):
     """Class PageObject CatalogPage"""
 
-    def __init__(self, browser: webdriver, url: str, timeout: float = 10):
-        super().__init__(browser, url, timeout)
+    def __init__(self, browser: webdriver, url: str):
+        super().__init__(browser, url)
 
-        self.__header_with_catalog_name = BaseElement(
+        self.__header = Header(browser)
+
+        self.__title_with_catalog_name = BaseElement(
             self.browser,
-            name="header_with_catalog_name",
+            name="title__with_catalog_name",
             locator=(By.CSS_SELECTOR, "div.pt-0 h1"),
         )
         self.__breadcrumb_item = BaseElement(
@@ -26,9 +29,14 @@ class CatalogPage(MainPage):
         )
 
     @property
+    def header(self) -> Header:
+        """Return: Header"""
+        return self.__header
+
+    @property
     def catalog_name(self) -> str:
         """Return: current catalog name from catalog page"""
-        catalog_name = self.__header_with_catalog_name.get_element().text
+        catalog_name = self.__title_with_catalog_name.get_element().text
         logger.info(f"Get current catalog name from catalog page - {catalog_name}")
         return catalog_name
 
@@ -48,7 +56,6 @@ class CatalogPage(MainPage):
             False - if there is no product card
         """
         is_there_product = self.get_product_card_by_id(product_id).is_there_product_card()
-        logger.info(f"Search product with id {product_id} in catalog, result = {is_there_product}")
         return is_there_product
 
     def get_product_card_by_id(self, product_id: str) -> ProductCard:

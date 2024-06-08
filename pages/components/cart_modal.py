@@ -1,41 +1,40 @@
-"""The module contains PageComponent ModalCart"""
+"""The module contains PageComponent CartModal"""
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from loguru import logger
-from pages.page_objects.checkout_page import CheckoutPage
-from pages.page_elements.elements import BaseElement, Link
+from pages.elements.elements import BaseElement, Link
 
 
-class ModalCart:
+class CartModal:
     """
-    PageComponent ModalCart
-    Modal window with information about the product added to the cart
+    PageComponent CartModal
+    Modal form with information about the product added to the cart
     """
 
     def __init__(self, browser: webdriver):
         self.browser = browser
-        self.name = "modal_content"
+        self.name = "modal_content_cart"
 
         self.__modal_title = BaseElement(
             self.browser,
             name="modal_content_title",
-            locator=(By.CSS_SELECTOR, f"div.modal-title"),
+            locator=(By.CSS_SELECTOR, "div.modal-title"),
         )
         self.__modal_item_cart = BaseElement(
             self.browser,
             name="modal_content_item_cart",
-            locator=(By.CSS_SELECTOR, f"div.modal-cart-item"))
+            locator=(By.CSS_SELECTOR, "div.modal-cart-item"))
 
         self.__modal_item_cart_title = BaseElement(
             self.browser,
             name="modal_content_item_cart_title",
-            locator=(By.CSS_SELECTOR, f"a.modal-cart-item__title"))
+            locator=(By.CSS_SELECTOR, "a.modal-cart-item__title"))
 
         self.__modal_item_cart_price = BaseElement(
             self.browser,
             name="modal_content_item_cart_price",
-            locator=(By.CSS_SELECTOR, f"span.modal-cart-item__price"))
+            locator=(By.CSS_SELECTOR, "span.modal-cart-item__price"))
 
         self.__link_go_to_cart = Link(
             self.browser,
@@ -63,8 +62,7 @@ class ModalCart:
         logger.info(f"Get product price - {product_price}")
         return product_price
 
-    def go_to_checkout_page(self) -> CheckoutPage:
+    def go_to_checkout_page(self):
         """Goes to CheckoutPage"""
-        logger.info(f"Go to checkout page")
+        logger.info("Go to checkout page")
         self.__link_go_to_cart.get_element().click()
-        return CheckoutPage(self.browser)

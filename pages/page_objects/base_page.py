@@ -7,7 +7,7 @@ from selenium import webdriver
 class BasePage:
     """PageObject BasePage"""
 
-    def __init__(self, browser: webdriver, url: str, timeout: float = 1):
+    def __init__(self, browser: webdriver, url: str):
         self.browser = browser
         self.url = url
 
