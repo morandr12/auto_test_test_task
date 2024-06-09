@@ -11,15 +11,17 @@ from utilits.logger import logger
 
 
 def pytest_addoption(parser):
-    parser.addoption("--headless", action="store_true", help="Run browser in headless mode.")
+    parser.addoption("--headed", action="store_true", help="Run browser in headed mode.")
 
 
 @pytest.fixture(scope="function")
 def browser(request) -> webdriver:
     options = Options()
 
-    if request.config.getoption("headless"):
+    if not request.config.getoption("headed"):
         options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
     logger.info("Start browser for test..")
     browser = webdriver.Chrome(options=options)

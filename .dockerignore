@@ -1,0 +1,13 @@
+# игнорировать директории
+.git
+.idea
+.venv
+.pytest_cache
+__pycache__
+
+# игнорировать все файлы .log
+logs/*.log
+
+# игнорировать .gitignore
+/.gitignore
+

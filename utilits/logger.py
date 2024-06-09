@@ -1,15 +1,24 @@
 """Module logging initialization"""
 
 import sys
+from pathlib import Path
 from loguru import logger
 
 
-def logger_init():
-    """Init logger"""
+def logger_init(log_file_path: Path):
+    """Init logging"""
 
     # Disable default logging with output to stderr
     logger.remove()
 
+    logger.add(
+        log_file_path,
+        level="TRACE",
+        mode="w",
+        backtrace=True,
+        diagnose=True,
+        delay=True,
+    )
     logger.add(
         sys.stdout,
         colorize=True,
@@ -18,4 +27,4 @@ def logger_init():
     )
 
 
-logger_init()
+logger_init(log_file_path=Path("./logs/testrun.log"))
