@@ -17,6 +17,7 @@ class UserProfilePage(BasePage):
 
     def __init__(self, browser: webdriver, url: str = url):
         super().__init__(browser, url)
+
         self.__header = Header(browser)
 
         self.__name_filed = InputField(

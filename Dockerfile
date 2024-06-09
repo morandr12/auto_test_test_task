@@ -1,11 +1,11 @@
 FROM python:alpine
 
-# update apk repo
+# Update apk repo
 RUN echo "https://dl-4.alpinelinux.org/alpine/latest-stable/main/" >> /etc/apk/repositories && \
     echo "https://dl-4.alpinelinux.org/alpine/latest-stable/community/" >> /etc/apk/repositories
 RUN apk update
 
-# install chromedriver
+# Install chromedriver
 RUN apk update
 RUN apk add --no-cache chromium chromium-chromedriver tzdata
 
@@ -17,4 +17,4 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Run tests
-CMD ["pytest", "-sv"]
+CMD ["pytest", "-rfx", "-sv"]

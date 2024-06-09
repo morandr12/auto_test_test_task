@@ -25,7 +25,6 @@ class CheckoutPage(BasePage):
             locator=(By.CSS_SELECTOR, ".container img.empty-page-img"),
         )
 
-        self.__cart = Cart(self.browser)
 
     @property
     def cart(self):

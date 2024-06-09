@@ -1,13 +1,13 @@
-# игнорировать директории
+# Ignore directories
 .git
 .idea
 .venv
 .pytest_cache
 __pycache__
 
-# игнорировать все файлы .log
+# Ignore files .log
 logs/*.log
 
-# игнорировать .gitignore
+# Ignore .gitignore
 /.gitignore
 

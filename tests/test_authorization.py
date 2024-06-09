@@ -68,7 +68,9 @@ class TestSuiteAuthorization:
 
         @pytest.mark.negative
         @pytest.mark.parametrize(
-            "user_data", [empty_password, empty_email, incorrect_password, incorrect_email]
+            "user_data",
+            [empty_password, empty_email, incorrect_password, incorrect_email],
+            ids=["empty_password", "empty_email", "incorrect_password", "incorrect_email"],
         )
         def test_user_authorization_negative(self, main_page: MainPage, user_data):
             """Test user authorization negative"""
