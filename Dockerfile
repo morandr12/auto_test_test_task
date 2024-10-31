@@ -6,7 +6,6 @@ RUN echo "https://dl-4.alpinelinux.org/alpine/latest-stable/main/" >> /etc/apk/r
 RUN apk update
 
 # Install chromedriver
-RUN apk update
 RUN apk add --no-cache chromium chromium-chromedriver tzdata
 
 # Copy project files to the working directory
